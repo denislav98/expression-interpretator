@@ -1,42 +1,36 @@
 package com.company;
 
-import static com.company.Command.DEFINE;
-import static com.company.Command.SOLVE;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.company.action.DefineFunctionAction;
+import com.company.action.IFunctionAction;
+import com.company.action.SolveFunctionAction;
+
 public class Main {
 
-    private static final Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
-        System.out.println("Enter <DEFINE> to define a function with parameters");
-        System.out.println("Enter <SOLVE> to solve a given function");
-        String command = scanner.nextLine().toUpperCase();  // DEFINE
+        Map<String, List<String>> functions = new HashMap<>();
 
-        Map<String, Node> functions = new HashMap<>();
+        while (true) {
+            System.out.println("Options: \n" +
+                    "1. DEFINE function \n" +
+                    "2. SOLVE \n" +
+                    "3. EXIT");
 
-        if (DEFINE.equals(command)) {
-            System.out.println("Enter function definition e.g func1(a,b)");
-            String functionDefinition = scanner.nextLine(); // extract only func1
-            String functionName = functionDefinition.split("\\(")[0];
-            String functionArgs = functionDefinition.split("[()]")[1];
+            int choice = Integer.parseInt(new Scanner(System.in).nextLine());
 
-            System.out.println("Enter function definition e.g func1(a,b)");
-            String functionParams = scanner.nextLine(); // "a & b"
-
-            Node tree = ExpressionTreeBuilder.buildExpressionTree(functionParams);
-            ExpressionTreeBuilder.solveExpressionTree(tree, new String[] { "0", "1" });
-            functions.put(functionDefinition, tree);
-            // save as json file
-        } else if (SOLVE.equals(command)) {
-            System.out.println("Enter function name to solve e.g func1(0,1)");
-            String functionDefinition = scanner.nextLine(); // extract only func1
-            String functionName = functionDefinition.split("\\(")[0];
-            String functionArgs = functionDefinition.split("[()]")[1];
-            //  Node tree = ExpressionTreeBuilder.buildExpressionTree(functionParams);
+            if (choice == 1) {
+                IFunctionAction defineAction = new DefineFunctionAction(functions);
+                defineAction.execute();
+            } else if (choice == 2) {
+                IFunctionAction action = new SolveFunctionAction(functions);
+                action.execute();
+            } else if (choice == 3) {
+                return;
+            }
         }
     }
 }

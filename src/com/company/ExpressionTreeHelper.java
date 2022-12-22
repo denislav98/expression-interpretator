@@ -1,15 +1,24 @@
 package com.company;
 
-import static java.lang.String.format;
-import static com.company.OperatorType.AND;
-import static com.company.OperatorType.NOT;
-import static com.company.OperatorType.OR;
+import static com.company.model.OperatorType.AND;
+import static com.company.model.OperatorType.OR;
+import static com.company.validators.ExpressionValidator.isNumber;
+import static com.company.validators.ExpressionValidator.isOperator;
+import static com.company.validators.ExpressionValidator.obtainOperatorType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
-public class ExpressionTreeBuilder {
+import com.company.model.Node;
+import com.company.model.OperandNode;
+import com.company.model.OperatorNode;
+
+public class ExpressionTreeHelper {
 
     public static boolean solveExpressionTree(Node tree, String[] values) {
         for (String value : values) {
@@ -66,21 +75,11 @@ public class ExpressionTreeBuilder {
         return false;
     }
 
-    private static boolean isNumber(String value) {
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public static Node buildExpressionTree(String functionParams) {
+    // func1(a,b) -> Node(a b &)
+    public static Node buildExpressionTree(List<String> functionParams) {
         Stack<Node> st = new Stack<>();
         Node temp;
-
-        for (int i = 0; i < functionParams.length(); i++) {
-            String currentParam = String.valueOf(functionParams.charAt(i));
+        for (String currentParam : functionParams) {
             if (!isOperator(currentParam)) {
                 temp = new OperandNode(currentParam);
                 st.push(temp);
@@ -100,28 +99,6 @@ public class ExpressionTreeBuilder {
         return temp;
     }
 
-    public static boolean isOperator(String operator) {
-        try {
-            obtainOperatorType(operator);
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-    private static OperatorType obtainOperatorType(String str) {
-        switch (str) {
-        case "&":
-            return AND;
-        case "|":
-            return OR;
-        case "!":
-            return NOT;
-        default:
-            throw new IllegalArgumentException(format("Invalid operator given: %s", str));
-        }
-    }
-
     public static void inorder(Node root) {
         if (root == null) {
             return;
@@ -132,9 +109,26 @@ public class ExpressionTreeBuilder {
     }
 
     public static void main(String[] args) {
-        String postfix = "abc&|";
+        // func1(a,b) -> a & b
+        Map<String, Node> functions = new HashMap<>();
+        Node c = new OperandNode("c");
+        Node b = new OperandNode("b");
+        Node and = new OperatorNode("&", AND);
+        and.setRight(c);
+        and.setLeft(b);
+        Node a = new OperandNode("a");
+        Node or = new OperatorNode("|", OR);
+        or.setLeft(a);
+        or.setRight(and);
 
-        Node r = buildExpressionTree(postfix);
+        functions.put("func1(a,b,c)", or);
+
+        List<String> params = new ArrayList<>();
+        params.add("func1(a,b,c)");
+        params.add("d");
+        params.add("|");
+
+        Node r = buildExpressionTree(params);
         boolean result = solveExpressionTree(r, new String[] { "0", "1", "0" });
         System.out.println(result);
         inorder(r);
