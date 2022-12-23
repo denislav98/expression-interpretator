@@ -1,4 +1,4 @@
-package com.company.validators;
+package com.company.util;
 
 import static java.lang.String.format;
 import static com.company.model.OperatorType.AND;
@@ -10,17 +10,16 @@ import java.util.List;
 
 import com.company.model.OperatorType;
 
-public class ExpressionValidator {
+public class ExpressionUtils {
 
-    private ExpressionValidator() {}
+    private ExpressionUtils() {}
 
     public static boolean isOperand(String value) {
-        try {
-            obtainOperatorType(value);
+        if (value == null || value.length() != 1) {
             return false;
-        } catch (IllegalArgumentException e) {
-            return true;
         }
+
+        return Character.isLetter(value.charAt(0));
     }
 
     public static boolean isOperator(String value) {
@@ -41,7 +40,7 @@ public class ExpressionValidator {
         case "!":
             return NOT;
         default:
-            throw new IllegalArgumentException(format("Invalid operator given: %s", str));
+            throw new IllegalArgumentException(format("Invalid operator given: '%s'", str));
         }
     }
 

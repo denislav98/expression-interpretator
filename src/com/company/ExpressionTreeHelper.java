@@ -1,7 +1,7 @@
 package com.company;
 
-import static com.company.validators.ExpressionValidator.isOperand;
-import static com.company.validators.ExpressionValidator.obtainOperatorType;
+import static com.company.util.ExpressionUtils.isOperand;
+import static com.company.util.ExpressionUtils.obtainOperatorType;
 
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,6 @@ public class ExpressionTreeHelper {
         return findNode(root.getRight(), value); // search right sub-tree
     }
 
-    // func1(a,b) -> Node(a b &)
     public static Node buildExpressionTree(List<String> functionParams) {
         Stack<Node> st = new Stack<>();
         Node temp;

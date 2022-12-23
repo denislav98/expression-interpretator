@@ -1,17 +1,14 @@
 package com.company.action;
 
-import static java.lang.String.format;
-import static com.company.action.FunctionParseUtils.parseFunctionArguments;
-import static com.company.action.FunctionParseUtils.parseFunctionName;
-import static com.company.action.FunctionParseUtils.parseFunctionParameters;
-import static com.company.validators.ExpressionValidator.isOperand;
-import static com.company.validators.ExpressionValidator.isOperator;
-import static com.company.validators.ExpressionValidator.obtainOperatorType;
+import static com.company.util.FunctionParseUtils.parseFunctionArguments;
+import static com.company.util.FunctionParseUtils.parseFunctionName;
+import static com.company.util.FunctionParseUtils.parseFunctionParameters;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import com.company.validators.FunctionValidator;
 
 public class DefineFunctionAction implements IFunctionAction {
 
@@ -38,54 +35,11 @@ public class DefineFunctionAction implements IFunctionAction {
         String functionParamsFromStdin = scanner.nextLine(); // "func1(a,b) | c"
 
         List<String> functionParams = parseFunctionParameters(functionParamsFromStdin, functions);
-        validateFunctionParameters(functionArgs, functionParams);
+        new FunctionValidator(functions).validateParameters(functionArgs, functionParams);
 
         functions.put(functionName, functionParams);
 
         System.out.printf(SUCCESSFULLY_DEFINED_FUNCTION_MSG, functionDefinition, functionParams);
     }
 
-    private void validateFunctionParameters(List<String> functionArgs,
-            List<String> functionParams) {
-        List<String> operandParams = new ArrayList<>();
-        List<String> operators = new ArrayList<>();
-        for (String parameter : functionParams) {
-            if (isOperand(parameter)) {
-                operandParams.add(parameter);
-            } else {
-                obtainOperatorType(parameter);
-                operators.add(parameter);
-            }
-
-            if (parameter.contains("func")) {
-                String funcName = parseFunctionName(parameter);
-                List<String> funcParams = functions.get(funcName);
-                if (funcParams == null) {
-                    throw new IllegalArgumentException(
-                            format("No such function defined: %s", funcName));
-                }
-                operandParams.addAll(funcParams);
-            }
-        }
-
-        int argsSize = functionArgs.size();
-        int operandsSize = operandParams.size();
-        int operatorsSize = operators.size();
-
-        if (argsSize != operandsSize) {
-            List<String> notDefinedOperands = new ArrayList<>(operandParams);
-            notDefinedOperands.removeAll(functionArgs);
-            throw new IllegalStateException(
-                    format("Failed to define function.The following operands: '%s' are not defined",
-                            notDefinedOperands));
-        }
-
-     /*   if (operandsSize == operatorsSize - 1) {
-            throw new IllegalStateException(
-                    format("Failed to define function.Mismatch in operators: '%s' and operands: '%s'",
-                            operators, operandParams));
-        }
-
-      */
-    }
 }

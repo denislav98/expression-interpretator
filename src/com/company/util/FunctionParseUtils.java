@@ -1,4 +1,4 @@
-package com.company.action;
+package com.company.util;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FunctionParseUtils {
+
+    private static final String INVALID_FUNCTION_DEFINITION_MSG = "Expected function definition is <func(a,b)>. Provided: %s";
 
     private FunctionParseUtils() {}
 
@@ -47,9 +49,7 @@ public class FunctionParseUtils {
         String[] parts = definition.split("[()]");
 
         if (parts.length != 2) {
-            throw new IllegalArgumentException(
-                    format("Expected function definition is <func(a,b)>. Provided: %s",
-                            definition));
+            throw new IllegalArgumentException(format(INVALID_FUNCTION_DEFINITION_MSG, definition));
         }
 
         return parts;
