@@ -15,21 +15,30 @@ public class Main {
         Map<String, List<String>> functions = new HashMap<>();
 
         while (true) {
-            System.out.println("Options: \n" +
-                    "1. DEFINE function \n" +
-                    "2. SOLVE \n" +
-                    "3. EXIT");
+            try {
+                System.out.println("Options: \n" +
+                        "1. DEFINE function\n" +
+                        "2. SOLVE function \n" +
+                        "3. PRINT functions \n" +
+                        "4. EXIT");
 
-            int choice = Integer.parseInt(new Scanner(System.in).nextLine());
+                int choice = Integer.parseInt(new Scanner(System.in).nextLine());
 
-            if (choice == 1) {
-                IFunctionAction defineAction = new DefineFunctionAction(functions);
-                defineAction.execute();
-            } else if (choice == 2) {
-                IFunctionAction action = new SolveFunctionAction(functions);
-                action.execute();
-            } else if (choice == 3) {
-                return;
+                if (choice == 1) {
+                    IFunctionAction defineAction = new DefineFunctionAction(functions);
+                    defineAction.execute();
+                } else if (choice == 2) {
+                    IFunctionAction action = new SolveFunctionAction(functions);
+                    action.execute();
+                } else if (choice == 3) {
+                    for (Map.Entry<String, List<String>> entry : functions.entrySet()) {
+                        System.out.println(entry.getKey() + " -> " + entry.getValue());
+                    }
+                } else if (choice == 4) {
+                    return;
+                }
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
             }
         }
     }

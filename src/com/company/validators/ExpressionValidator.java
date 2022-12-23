@@ -5,9 +5,23 @@ import static com.company.model.OperatorType.AND;
 import static com.company.model.OperatorType.NOT;
 import static com.company.model.OperatorType.OR;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.company.model.OperatorType;
 
 public class ExpressionValidator {
+
+    private ExpressionValidator() {}
+
+    public static boolean isOperand(String value) {
+        try {
+            obtainOperatorType(value);
+            return false;
+        } catch (IllegalArgumentException e) {
+            return true;
+        }
+    }
 
     public static boolean isOperator(String value) {
         try {
@@ -31,12 +45,13 @@ public class ExpressionValidator {
         }
     }
 
-    public static boolean isNumber(String value) {
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+    public static List<String> filterOperands(List<String> arguments) {
+        List<String> operands = new ArrayList<>();
+        for (String parameter : arguments) {
+            if (isOperator(parameter)) {
+                operands.add(parameter);
+            }
         }
+        return operands;
     }
 }
