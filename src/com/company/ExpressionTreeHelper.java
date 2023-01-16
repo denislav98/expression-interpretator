@@ -5,11 +5,11 @@ import static com.company.util.ExpressionUtils.obtainOperatorType;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import com.company.model.Node;
 import com.company.model.OperandNode;
 import com.company.model.OperatorNode;
+import com.company.structures.Stack;
 
 public class ExpressionTreeHelper {
 

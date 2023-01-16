@@ -45,7 +45,7 @@ public class SolveFunctionAction implements IFunctionAction {
                 functionParams);
 
         boolean result = solveExpressionTree(tree, paramsPerArguments);
-        System.out.println(result);
+        System.out.printf("Result is: %s%n", result ? 1 : 0);
     }
 
     private Map<String, String> getFunctionArgsWithParams(List<String> args, List<String> params) {

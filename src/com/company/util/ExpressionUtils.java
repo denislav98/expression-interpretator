@@ -47,7 +47,7 @@ public class ExpressionUtils {
     public static List<String> filterOperands(List<String> arguments) {
         List<String> operands = new ArrayList<>();
         for (String parameter : arguments) {
-            if (isOperator(parameter)) {
+            if (isOperand(parameter)) {
                 operands.add(parameter);
             }
         }

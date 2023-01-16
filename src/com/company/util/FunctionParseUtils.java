@@ -3,9 +3,10 @@ package com.company.util;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import com.company.structures.LinkedList;
 
 public class FunctionParseUtils {
 
@@ -19,7 +20,11 @@ public class FunctionParseUtils {
 
     public static List<String> parseFunctionArguments(String definition) {
         String functionArguments = getFunctionDefinitionParts(definition)[1];
-        return new LinkedList<>(asList(functionArguments.split(",")));
+        List<String> argsList = new LinkedList<>();
+        for (String arg : asList(functionArguments.split(","))) {
+            argsList.add(arg);
+        }
+        return argsList;
     }
 
     public static List<String> parseFunctionParameters(String parameters,

@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.company.action.DefineFunctionAction;
 import com.company.action.IFunctionAction;
+import com.company.action.PrintFunctionsAction;
 import com.company.action.SolveFunctionAction;
 
 public class Main {
@@ -31,9 +32,8 @@ public class Main {
                     IFunctionAction action = new SolveFunctionAction(functions);
                     action.execute();
                 } else if (choice == 3) {
-                    for (Map.Entry<String, List<String>> entry : functions.entrySet()) {
-                        System.out.println(entry.getKey() + " -> " + entry.getValue());
-                    }
+                    IFunctionAction action = new PrintFunctionsAction(functions);
+                    action.execute();
                 } else if (choice == 4) {
                     return;
                 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.company.structures.LinkedList;
 import com.company.validators.FunctionValidator;
 
 public class DefineFunctionAction implements IFunctionAction {

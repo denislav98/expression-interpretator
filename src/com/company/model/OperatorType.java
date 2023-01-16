@@ -24,8 +24,4 @@ public enum OperatorType {
             throw new IllegalStateException("No such operation entered!");
         }
     }
-
-    public String getName() {
-        return name;
-    }
 }
